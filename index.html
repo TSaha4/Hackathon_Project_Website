@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mitra - Mental Health Support</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Landing Page -->
+    <div id="landing-page" class="screen active">
+        <div class="container">
+            <div class="landing-content">
+                <div class="app-logo">
+                    <h1 class="app-title">🧠 Mitra</h1>
+                    <p class="app-subtitle">Mental health Inclusive Therapy and Recovery Assistance</p>
+                </div>
+                
+                <div class="role-selection">
+                    <h2>Choose Your Role</h2>
+                    <div class="role-cards">
+                        <button class="role-card" data-role="student">
+                            <div class="role-icon">🎓</div>
+                            <h3>Student</h3>
+                            <p>Access mood tracking, peer support, and counseling sessions</p>
+                        </button>
+                        <button class="role-card" data-role="counselor">
+                            <div class="role-icon">👨‍⚕️</div>
+                            <h3>Counselor</h3>
+                            <p>Manage students, sessions, and submit reports</p>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="privacy-notice">
+                    <p>🔒 Your identity is protected with end-to-end encryption and anonymous access</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Login -->
+    <div id="student-login" class="screen">
+        <div class="container">
+            <div class="login-form">
+                <h2>🎓 Student Login</h2>
+                <form id="student-login-form">
+                    <div class="form-group">
+                        <label class="form-label">Student ID</label>
+                        <input type="text" class="form-control" placeholder="Enter your student ID" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="btn btn--primary btn--full-width">Login Securely</button>
+                </form>
+                <button class="btn btn--outline btn--full-width mt-8" onclick="showScreen('landing-page')">Back</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Counselor Login -->
+    <div id="counselor-login" class="screen">
+        <div class="container">
+            <div class="login-form">
+                <h2>👨‍⚕️ Counselor Login</h2>
+                <form id="counselor-login-form">
+                    <div class="form-group">
+                        <label class="form-label">Counselor ID</label>
+                        <input type="text" class="form-control" placeholder="Enter your counselor ID" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="btn btn--primary btn--full-width">Login Securely</button>
+                </form>
+                <button class="btn btn--outline btn--full-width mt-8" onclick="showScreen('landing-page')">Back</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Dashboard -->
+    <div id="student-dashboard" class="screen">
+        <div class="dashboard-header">
+            <div class="container">
+                <div class="header-content">
+                    <h1>Welcome back! 🌟</h1>
+                    <p>You're Anonymous Student #ST7832</p>
+                    <button class="btn btn--outline btn--sm" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mood Checker Section -->
+        <div id="mood-section" class="dashboard-content active">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Daily Mood Check-in</h2>
+                    <div class="streak-display">
+                        <span class="streak-counter">🔥 7 Day Streak!</span>
+                    </div>
+                </div>
+
+                <div class="mood-selector">
+                    <h3>How are you feeling today?</h3>
+                    <div class="mood-options">
+                        <button class="mood-option" data-mood="happy" data-value="5">
+                            <span class="mood-emoji">😊</span>
+                            <span class="mood-label">Happy</span>
+                        </button>
+                        <button class="mood-option" data-mood="neutral" data-value="3">
+                            <span class="mood-emoji">😐</span>
+                            <span class="mood-label">Neutral</span>
+                        </button>
+                        <button class="mood-option" data-mood="sad" data-value="2">
+                            <span class="mood-emoji">😢</span>
+                            <span class="mood-label">Sad</span>
+                        </button>
+                        <button class="mood-option" data-mood="angry" data-value="2">
+                            <span class="mood-emoji">😠</span>
+                            <span class="mood-label">Angry</span>
+                        </button>
+                        <button class="mood-option" data-mood="anxious" data-value="1">
+                            <span class="mood-emoji">😰</span>
+                            <span class="mood-label">Anxious</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="mood-questions" class="mood-questions hidden">
+                    <h3>Tell us more about your day</h3>
+                    <div class="question-group">
+                        <label class="form-label">How stressed do you feel about academics today? (1-10)</label>
+                        <input type="range" min="1" max="10" value="5" class="mood-slider" id="stress-slider">
+                        <span class="slider-value">5</span>
+                    </div>
+                    <div class="question-group">
+                        <label class="form-label">How connected do you feel with friends/family? (1-10)</label>
+                        <input type="range" min="1" max="10" value="5" class="mood-slider" id="connection-slider">
+                        <span class="slider-value">5</span>
+                    </div>
+                    <div class="question-group">
+                        <label class="form-label">How much sleep did you get last night?</label>
+                        <input type="number" min="0" max="12" class="form-control" placeholder="Hours" id="sleep-input">
+                    </div>
+                    <div class="question-group">
+                        <label class="form-label">Any specific concerns today?</label>
+                        <textarea class="form-control" rows="3" placeholder="Share what's on your mind..." id="concerns-input"></textarea>
+                    </div>
+                    <button class="btn btn--primary" onclick="submitMoodCheck()">Submit Check-in</button>
+                </div>
+
+                <div class="mood-chart-container">
+                    <h3>Your Mood Journey</h3>
+                    <div class="chart-container" style="position: relative; height: 300px;">
+                        <canvas id="moodChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="achievements">
+                    <h3>Your Achievements 🏆</h3>
+                    <div class="achievement-list">
+                        <div class="achievement unlocked">
+                            <span class="achievement-icon">🌟</span>
+                            <div class="achievement-info">
+                                <h4>First Steps</h4>
+                                <p>Complete your first mood check-in</p>
+                            </div>
+                        </div>
+                        <div class="achievement unlocked">
+                            <span class="achievement-icon">🔥</span>
+                            <div class="achievement-info">
+                                <h4>Consistent</h4>
+                                <p>3-day mood tracking streak</p>
+                            </div>
+                        </div>
+                        <div class="achievement unlocked">
+                            <span class="achievement-icon">💪</span>
+                            <div class="achievement-info">
+                                <h4>Weekly Warrior</h4>
+                                <p>7-day mood tracking streak</p>
+                            </div>
+                        </div>
+                        <div class="achievement locked">
+                            <span class="achievement-icon">🏆</span>
+                            <div class="achievement-info">
+                                <h4>Mindful Month</h4>
+                                <p>30-day mood tracking streak</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Peer Support Section -->
+        <div id="peer-section" class="dashboard-content">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Peer Support 💬</h2>
+                    <p>Connect with verified peer volunteers anonymously</p>
+                </div>
+
+                <div class="peer-volunteers">
+                    <h3>Available Volunteers</h3>
+                    <div class="volunteer-list">
+                        <div class="volunteer-card online" onclick="startChat('PV001')">
+                            <div class="volunteer-status"></div>
+                            <div class="volunteer-info">
+                                <h4>Peer Volunteer #1</h4>
+                                <p>Specialties: Anxiety, Academic Stress</p>
+                                <span class="status-badge online">Online</span>
+                            </div>
+                        </div>
+                        <div class="volunteer-card online" onclick="startChat('PV002')">
+                            <div class="volunteer-status"></div>
+                            <div class="volunteer-info">
+                                <h4>Peer Volunteer #2</h4>
+                                <p>Specialties: Depression, Academic Support</p>
+                                <span class="status-badge online">Online</span>
+                            </div>
+                        </div>
+                        <div class="volunteer-card away">
+                            <div class="volunteer-status"></div>
+                            <div class="volunteer-info">
+                                <h4>Peer Volunteer #3</h4>
+                                <p>Specialties: Relationships, Family</p>
+                                <span class="status-badge away">Away</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="chat-interface" class="chat-interface hidden">
+                    <div class="chat-header">
+                        <h4>Chat with <span id="chat-partner">Peer Volunteer #1</span></h4>
+                        <button class="btn btn--outline btn--sm" onclick="endChat()">End Chat</button>
+                    </div>
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="message volunteer">
+                            <div class="message-content">Hi there! I'm here to listen. How are you feeling today?</div>
+                            <div class="message-time">10:30 AM</div>
+                        </div>
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" class="form-control" placeholder="Type your message..." id="chat-message-input">
+                        <button class="btn btn--primary" onclick="sendMessage()">Send</button>
+                    </div>
+                </div>
+
+                <div class="emergency-support">
+                    <div class="emergency-card">
+                        <h4>🚨 Need Immediate Help?</h4>
+                        <p>If you're in crisis, contact emergency services or call the mental health helpline</p>
+                        <button class="btn btn--primary">Emergency Support</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Session Booking Section -->
+        <div id="session-section" class="dashboard-content">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Counseling Sessions 📅</h2>
+                    <p>Book anonymous sessions with qualified counselors</p>
+                </div>
+
+                <div class="session-booking">
+                    <h3>Available Time Slots - Today</h3>
+                    <div class="time-slots">
+                        <button class="time-slot available" onclick="bookSession('10:00 AM')">
+                            <span class="time">10:00 AM</span>
+                            <span class="duration">60 min</span>
+                        </button>
+                        <button class="time-slot available" onclick="bookSession('11:00 AM')">
+                            <span class="time">11:00 AM</span>
+                            <span class="duration">60 min</span>
+                        </button>
+                        <button class="time-slot booked">
+                            <span class="time">2:00 PM</span>
+                            <span class="duration">Booked</span>
+                        </button>
+                        <button class="time-slot available" onclick="bookSession('3:00 PM')">
+                            <span class="time">3:00 PM</span>
+                            <span class="duration">60 min</span>
+                        </button>
+                        <button class="time-slot available" onclick="bookSession('4:00 PM')">
+                            <span class="time">4:00 PM</span>
+                            <span class="duration">60 min</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="upcoming-sessions">
+                    <h3>Your Upcoming Sessions</h3>
+                    <div class="session-card">
+                        <div class="session-info">
+                            <h4>Counseling Session</h4>
+                            <p>Today, 2:00 PM - 3:00 PM</p>
+                            <p>Your ID: ANON-ST7832</p>
+                        </div>
+                        <div class="session-actions">
+                            <button class="btn btn--outline btn--sm">Reschedule</button>
+                            <button class="btn btn--primary btn--sm">Join Session</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="privacy-info">
+                    <div class="info-card">
+                        <h4>🔒 Privacy & Security</h4>
+                        <ul>
+                            <li>Your identity remains anonymous (ID: ANON-ST7832)</li>
+                            <li>Voice sessions are end-to-end encrypted</li>
+                            <li>No personal information is shared with counselors</li>
+                            <li>Session recordings are automatically deleted after 24 hours</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <button class="nav-item active" onclick="showSection('mood-section')">
+                <span class="nav-icon">😊</span>
+                <span class="nav-label">Mood</span>
+            </button>
+            <button class="nav-item" onclick="showSection('peer-section')">
+                <span class="nav-icon">💬</span>
+                <span class="nav-label">Peers</span>
+            </button>
+            <button class="nav-item" onclick="showSection('session-section')">
+                <span class="nav-icon">📅</span>
+                <span class="nav-label">Sessions</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Counselor Dashboard -->
+    <div id="counselor-dashboard" class="screen">
+        <div class="dashboard-header">
+            <div class="container">
+                <div class="header-content">
+                    <h1>Counselor Dashboard</h1>
+                    <p>Dr. Anonymous #C4821</p>
+                    <button class="btn btn--outline btn--sm" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student Management Section -->
+        <div id="students-section" class="dashboard-content active">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Student Management 📊</h2>
+                    <p>Monitor anonymous student progress and mood patterns</p>
+                </div>
+
+                <div class="student-list">
+                    <div class="student-card">
+                        <div class="student-header">
+                            <h4>ANON-ST001</h4>
+                            <span class="risk-badge low">Low Risk</span>
+                        </div>
+                        <div class="student-stats">
+                            <div class="stat">
+                                <span class="stat-label">Sessions</span>
+                                <span class="stat-value">3</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Last Session</span>
+                                <span class="stat-value">Sep 14</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Avg Mood</span>
+                                <span class="stat-value">3.8</span>
+                            </div>
+                        </div>
+                        <div class="student-chart" style="position: relative; height: 150px;">
+                            <canvas id="studentChart1"></canvas>
+                        </div>
+                        <button class="btn btn--primary btn--sm" onclick="viewStudentDetails('ANON-ST001')">View Details</button>
+                    </div>
+
+                    <div class="student-card">
+                        <div class="student-header">
+                            <h4>ANON-ST002</h4>
+                            <span class="risk-badge medium">Medium Risk</span>
+                        </div>
+                        <div class="student-stats">
+                            <div class="stat">
+                                <span class="stat-label">Sessions</span>
+                                <span class="stat-value">5</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Last Session</span>
+                                <span class="stat-value">Sep 13</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Avg Mood</span>
+                                <span class="stat-value">2.3</span>
+                            </div>
+                        </div>
+                        <div class="student-chart" style="position: relative; height: 150px;">
+                            <canvas id="studentChart2"></canvas>
+                        </div>
+                        <button class="btn btn--primary btn--sm" onclick="viewStudentDetails('ANON-ST002')">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Session Management Section -->
+        <div id="counselor-sessions-section" class="dashboard-content">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Session Management 🗓️</h2>
+                    <p>Today's schedule and session management</p>
+                </div>
+
+                <div class="today-schedule">
+                    <h3>Today's Appointments</h3>
+                    <div class="schedule-list">
+                        <div class="schedule-item booked">
+                            <div class="schedule-time">9:00 AM</div>
+                            <div class="schedule-info">
+                                <h4>ANON-ST001</h4>
+                                <p>Regular session - 60 minutes</p>
+                            </div>
+                            <div class="schedule-actions">
+                                <button class="btn btn--primary btn--sm">Start Session</button>
+                            </div>
+                        </div>
+                        <div class="schedule-item available">
+                            <div class="schedule-time">10:00 AM</div>
+                            <div class="schedule-info">
+                                <h4>Available</h4>
+                                <p>60 minute slot</p>
+                            </div>
+                        </div>
+                        <div class="schedule-item booked">
+                            <div class="schedule-time">2:00 PM</div>
+                            <div class="schedule-info">
+                                <h4>ANON-ST002</h4>
+                                <p>Follow-up session - 60 minutes</p>
+                            </div>
+                            <div class="schedule-actions">
+                                <button class="btn btn--primary btn--sm">Start Session</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="session-notes">
+                    <h3>Session Notes (Encrypted)</h3>
+                    <div class="notes-form">
+                        <div class="form-group">
+                            <label class="form-label">Student ID</label>
+                            <input type="text" class="form-control" value="ANON-ST001" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Session Notes</label>
+                            <textarea class="form-control" rows="4" placeholder="Session observations and notes..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Mood Assessment (1-5)</label>
+                            <select class="form-control">
+                                <option>1 - Very Poor</option>
+                                <option>2 - Poor</option>
+                                <option>3 - Fair</option>
+                                <option>4 - Good</option>
+                                <option>5 - Excellent</option>
+                            </select>
+                        </div>
+                        <button class="btn btn--primary">Save Notes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reporting Section -->
+        <div id="reporting-section" class="dashboard-content">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Reporting Center 📋</h2>
+                    <p>Submit session reports to central authority</p>
+                </div>
+
+                <div class="report-form">
+                    <h3>Session Report</h3>
+                    <form id="session-report-form">
+                        <div class="form-group">
+                            <label class="form-label">Student ID</label>
+                            <select class="form-control" required>
+                                <option value="">Select Student</option>
+                                <option value="ANON-ST001">ANON-ST001</option>
+                                <option value="ANON-ST002">ANON-ST002</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Session Date</label>
+                            <input type="date" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Session Type</label>
+                            <select class="form-control" required>
+                                <option value="initial">Initial Assessment</option>
+                                <option value="regular">Regular Session</option>
+                                <option value="followup">Follow-up</option>
+                                <option value="crisis">Crisis Intervention</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Risk Assessment</label>
+                            <select class="form-control" required>
+                                <option value="low">Low Risk</option>
+                                <option value="medium">Medium Risk</option>
+                                <option value="high">High Risk</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Key Discussion Areas</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" value="academic"> Academic Stress</label>
+                                <label><input type="checkbox" value="anxiety"> Anxiety</label>
+                                <label><input type="checkbox" value="depression"> Depression</label>
+                                <label><input type="checkbox" value="relationships"> Relationships</label>
+                                <label><input type="checkbox" value="family"> Family Issues</label>
+                                <label><input type="checkbox" value="sleep"> Sleep Issues</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Recommended Actions</label>
+                            <textarea class="form-control" rows="4" placeholder="Recommended follow-up actions..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Next Session Recommended</label>
+                            <select class="form-control">
+                                <option value="1week">Within 1 week</option>
+                                <option value="2weeks">Within 2 weeks</option>
+                                <option value="1month">Within 1 month</option>
+                                <option value="asneeded">As needed</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn--primary">Submit Report to Authority</button>
+                    </form>
+                </div>
+
+                <div class="submitted-reports">
+                    <h3>Recent Submitted Reports</h3>
+                    <div class="report-list">
+                        <div class="report-item">
+                            <div class="report-info">
+                                <h4>ANON-ST001 - Sep 14, 2025</h4>
+                                <p>Regular Session - Low Risk Assessment</p>
+                                <span class="status-badge">Submitted</span>
+                            </div>
+                        </div>
+                        <div class="report-item">
+                            <div class="report-info">
+                                <h4>ANON-ST002 - Sep 13, 2025</h4>
+                                <p>Follow-up Session - Medium Risk Assessment</p>
+                                <span class="status-badge">Submitted</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Counselor Bottom Navigation -->
+        <div class="bottom-nav">
+            <button class="nav-item active" onclick="showSection('students-section')">
+                <span class="nav-icon">👥</span>
+                <span class="nav-label">Students</span>
+            </button>
+            <button class="nav-item" onclick="showSection('counselor-sessions-section')">
+                <span class="nav-icon">🗓️</span>
+                <span class="nav-label">Sessions</span>
+            </button>
+            <button class="nav-item" onclick="showSection('reporting-section')">
+                <span class="nav-icon">📋</span>
+                <span class="nav-label">Reports</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal hidden">
+        <div class="modal-content">
+            <h3 id="modalTitle">Success!</h3>
+            <p id="modalMessage">Your action was completed successfully.</p>
+            <button class="btn btn--primary" onclick="closeModal()">OK</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
