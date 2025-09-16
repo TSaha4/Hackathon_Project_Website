@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <!-- Landing Page - First Screen -->
+    <!-- Landing Page (Now the first screen) -->
     <div id="landing-page" class="screen active">
         <div class="container">
             <div class="landing-content">
@@ -20,20 +20,20 @@
                 <div class="role-selection">
                     <h2>Choose Your Role</h2>
                     <div class="role-cards">
-                        <button class="role-card" id="student-role-btn">
+                        <button class="role-card" data-role="student">
                             <div class="role-icon">🎓</div>
                             <h3>Student</h3>
-                            <p>Access mood tracking, peer support, and counseling sessions</p>
+                            <p>Access mood tracking, AI assistant, peer support, and counseling sessions</p>
                         </button>
-                        <button class="role-card" id="counselor-role-btn">
+                        <button class="role-card" data-role="counselor">
                             <div class="role-icon">👨‍⚕️</div>
                             <h3>Counselor</h3>
-                            <p>Manage students, sessions, and submit reports</p>
+                            <p>Manage students, sessions, and submit reports with cultural context</p>
                         </button>
-                        <button class="role-card" id="admin-role-btn">
+                        <button class="role-card" data-role="admin">
                             <div class="role-icon">📊</div>
                             <h3>Admin</h3>
-                            <p>View analytics, trends, and plan interventions</p>
+                            <p>View analytics, trends, and plan culturally-aware interventions</p>
                         </button>
                     </div>
                 </div>
@@ -59,9 +59,18 @@
                         <label class="form-label">Password</label>
                         <input type="password" class="form-control" placeholder="Enter your password" required>
                     </div>
-                    <button type="submit" class="btn btn--primary btn--full-width" id="student-login-btn">Login Securely</button>
+                    <div class="form-group">
+                        <label class="form-label">Select Your Region</label>
+                        <div class="region-buttons">
+                            <button type="button" class="region-btn" data-region="north">North India</button>
+                            <button type="button" class="region-btn" data-region="south">South India</button>
+                            <button type="button" class="region-btn" data-region="west">West India</button>
+                            <button type="button" class="region-btn" data-region="east">East India</button>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn--primary btn--full-width">Login Securely</button>
                 </form>
-                <button class="btn btn--outline btn--full-width mt-8" id="back-to-landing-1">Back</button>
+                <button class="btn btn--outline btn--full-width mt-8" onclick="showScreen('landing-page')">Back</button>
             </div>
         </div>
     </div>
@@ -80,9 +89,9 @@
                         <label class="form-label">Password</label>
                         <input type="password" class="form-control" placeholder="Enter your password" required>
                     </div>
-                    <button type="submit" class="btn btn--primary btn--full-width" id="counselor-login-btn">Login Securely</button>
+                    <button type="submit" class="btn btn--primary btn--full-width">Login Securely</button>
                 </form>
-                <button class="btn btn--outline btn--full-width mt-8" id="back-to-landing-2">Back</button>
+                <button class="btn btn--outline btn--full-width mt-8" onclick="showScreen('landing-page')">Back</button>
             </div>
         </div>
     </div>
@@ -101,9 +110,9 @@
                         <label class="form-label">Password</label>
                         <input type="password" class="form-control" placeholder="Enter your password" required>
                     </div>
-                    <button type="submit" class="btn btn--primary btn--full-width" id="admin-login-btn">Login Securely</button>
+                    <button type="submit" class="btn btn--primary btn--full-width">Login Securely</button>
                 </form>
-                <button class="btn btn--outline btn--full-width mt-8" id="back-to-landing-3">Back</button>
+                <button class="btn btn--outline btn--full-width mt-8" onclick="showScreen('landing-page')">Back</button>
             </div>
         </div>
     </div>
@@ -116,16 +125,17 @@
                     <div class="header-info">
                         <h1 id="student-greeting">Welcome back! 🌟</h1>
                         <p>You're Anonymous Student #ST7832</p>
+                        <span id="user-region" class="region-badge">North India</span>
                     </div>
                     <div class="header-actions">
                         <div class="language-switcher">
-                            <button class="language-btn active" id="lang-en">🇺🇸 EN</button>
-                            <button class="language-btn" id="lang-hi">🇮🇳 HI</button>
-                            <button class="language-btn" id="lang-ta">🇮🇳 TA</button>
-                            <button class="language-btn" id="lang-bn">🇮🇳 BN</button>
-                            <button class="language-btn" id="lang-mr">🇮🇳 MR</button>
+                            <button class="language-btn active" data-lang="en">🇺🇸 EN</button>
+                            <button class="language-btn" data-lang="hi">🇮🇳 HI</button>
+                            <button class="language-btn" data-lang="ta">🇮🇳 TA</button>
+                            <button class="language-btn" data-lang="bn">🇮🇳 BN</button>
+                            <button class="language-btn" data-lang="mr">🇮🇳 MR</button>
                         </div>
-                        <button class="btn btn--outline btn--sm" id="student-logout">Logout</button>
+                        <button class="btn btn--outline btn--sm" onclick="logout()">Logout</button>
                     </div>
                 </div>
             </div>
@@ -144,23 +154,23 @@
                 <div class="mood-selector">
                     <h3 id="mood-question">How are you feeling today?</h3>
                     <div class="mood-options">
-                        <button class="mood-option" id="mood-happy">
+                        <button class="mood-option" data-mood="happy" data-value="5">
                             <span class="mood-emoji">😊</span>
                             <span class="mood-label">Happy</span>
                         </button>
-                        <button class="mood-option" id="mood-neutral">
+                        <button class="mood-option" data-mood="neutral" data-value="3">
                             <span class="mood-emoji">😐</span>
                             <span class="mood-label">Neutral</span>
                         </button>
-                        <button class="mood-option" id="mood-sad">
+                        <button class="mood-option" data-mood="sad" data-value="2">
                             <span class="mood-emoji">😢</span>
                             <span class="mood-label">Sad</span>
                         </button>
-                        <button class="mood-option" id="mood-angry">
+                        <button class="mood-option" data-mood="angry" data-value="2">
                             <span class="mood-emoji">😠</span>
                             <span class="mood-label">Angry</span>
                         </button>
-                        <button class="mood-option" id="mood-anxious">
+                        <button class="mood-option" data-mood="anxious" data-value="1">
                             <span class="mood-emoji">😰</span>
                             <span class="mood-label">Anxious</span>
                         </button>
@@ -175,7 +185,7 @@
                             <input type="range" min="1" max="10" value="5" class="mood-slider" id="stress-slider">
                             <div class="slider-labels">
                                 <span>Low Stress</span>
-                                <span class="slider-value" id="stress-value">5</span>
+                                <span class="slider-value">5</span>
                                 <span>High Stress</span>
                             </div>
                         </div>
@@ -186,7 +196,7 @@
                             <input type="range" min="1" max="10" value="5" class="mood-slider" id="connection-slider">
                             <div class="slider-labels">
                                 <span>Disconnected</span>
-                                <span class="slider-value" id="connection-value">5</span>
+                                <span class="slider-value">5</span>
                                 <span>Very Connected</span>
                             </div>
                         </div>
@@ -194,25 +204,458 @@
                     <div class="question-group">
                         <label class="form-label">How much sleep did you get last night?</label>
                         <div class="sleep-buttons">
-                            <button type="button" class="sleep-btn" id="sleep-4">4 hrs</button>
-                            <button type="button" class="sleep-btn" id="sleep-5">5 hrs</button>
-                            <button type="button" class="sleep-btn" id="sleep-6">6 hrs</button>
-                            <button type="button" class="sleep-btn" id="sleep-7">7 hrs</button>
-                            <button type="button" class="sleep-btn" id="sleep-8">8 hrs</button>
-                            <button type="button" class="sleep-btn" id="sleep-9">9+ hrs</button>
+                            <button type="button" class="sleep-btn" data-hours="4">4 hrs</button>
+                            <button type="button" class="sleep-btn" data-hours="5">5 hrs</button>
+                            <button type="button" class="sleep-btn" data-hours="6">6 hrs</button>
+                            <button type="button" class="sleep-btn" data-hours="7">7 hrs</button>
+                            <button type="button" class="sleep-btn" data-hours="8">8 hrs</button>
+                            <button type="button" class="sleep-btn" data-hours="9">9+ hrs</button>
                         </div>
                     </div>
                     <div class="question-group">
                         <label class="form-label">Any specific concerns today?</label>
                         <textarea class="form-control" rows="3" placeholder="Share what's on your mind..." id="concerns-input"></textarea>
                     </div>
-                    <button class="btn btn--primary" id="submit-mood-btn">Submit Check-in</button>
+                    <button class="btn btn--primary" onclick="submitMoodCheck()">Submit Check-in</button>
                 </div>
 
                 <div class="mood-chart-container">
                     <h3>Your Mood Journey</h3>
                     <div class="chart-container" style="position: relative; height: 300px;">
                         <canvas id="moodChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="achievements">
+                    <h3>Your Achievements 🏆</h3>
+                    <div class="achievement-list">
+                        <div class="achievement unlocked">
+                            <span class="achievement-icon">🌟</span>
+                            <div class="achievement-info">
+                                <h4>First Steps</h4>
+                                <p>Complete your first mood check-in</p>
+                            </div>
+                        </div>
+                        <div class="achievement unlocked">
+                            <span class="achievement-icon">🔥</span>
+                            <div class="achievement-info">
+                                <h4>Consistent</h4>
+                                <p>3-day mood tracking streak</p>
+                            </div>
+                        </div>
+                        <div class="achievement unlocked">
+                            <span class="achievement-icon">💪</span>
+                            <div class="achievement-info">
+                                <h4>Weekly Warrior</h4>
+                                <p>7-day mood tracking streak</p>
+                            </div>
+                        </div>
+                        <div class="achievement locked">
+                            <span class="achievement-icon">🏆</span>
+                            <div class="achievement-info">
+                                <h4>Mindful Month</h4>
+                                <p>30-day mood tracking streak</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Assistant Section (NEW) -->
+        <div id="ai-assistant-section" class="dashboard-content">
+            <div class="container">
+                <div class="section-header">
+                    <h2>AI Wellness Assistant 🤖</h2>
+                    <p>Your culturally-aware AI companion for mental wellness support</p>
+                </div>
+
+                <div class="chat-container">
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="ai-message">
+                            <div class="message-avatar">🤖</div>
+                            <div class="message-content">
+                                <p>Hi! I'm your AI wellness assistant. I understand your cultural background from <span id="ai-region">North India</span> and I'm here to support you today. How can I help you?</p>
+                                <div class="message-time">Now</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quick-responses">
+                        <h4>Quick Options:</h4>
+                        <div class="quick-buttons">
+                            <button class="quick-btn" onclick="sendQuickMessage('exam_stress')">Exam Stress</button>
+                            <button class="quick-btn" onclick="sendQuickMessage('family_pressure')">Family Pressure</button>
+                            <button class="quick-btn" onclick="sendQuickMessage('loneliness')">Feeling Lonely</button>
+                            <button class="quick-btn" onclick="sendQuickMessage('cultural_practices')">Traditional Remedies</button>
+                        </div>
+                    </div>
+
+                    <div class="chat-input-container">
+                        <textarea class="form-control chat-input" placeholder="Type your message here..." id="chat-input"></textarea>
+                        <button class="btn btn--primary" onclick="sendMessage()">Send</button>
+                    </div>
+                </div>
+
+                <div class="ai-features">
+                    <h3>AI Assistant Features</h3>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">🎯</div>
+                            <h4>Crisis Detection</h4>
+                            <p>Immediate escalation to counselors when needed</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🌍</div>
+                            <h4>Cultural Awareness</h4>
+                            <p>Understands your regional and cultural context</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">📊</div>
+                            <h4>Mood Integration</h4>
+                            <p>Personalized responses based on your mood data</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enhanced Booking Section -->
+        <div id="enhanced-booking-section" class="dashboard-content">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Advanced Booking System 📅</h2>
+                    <p>Book sessions with culturally-aware counselors up to 3 weeks in advance</p>
+                </div>
+
+                <div class="booking-filters">
+                    <h3>Find Your Perfect Counselor</h3>
+                    <div class="counselor-filters">
+                        <div class="filter-group">
+                            <label class="form-label">Region Specialization</label>
+                            <div class="region-filter-buttons">
+                                <button class="filter-btn active" data-region="all">All Regions</button>
+                                <button class="filter-btn" data-region="north">North India</button>
+                                <button class="filter-btn" data-region="south">South India</button>
+                                <button class="filter-btn" data-region="west">West India</button>
+                                <button class="filter-btn" data-region="east">East India</button>
+                            </div>
+                        </div>
+                        <div class="filter-group">
+                            <label class="form-label">Session Type</label>
+                            <div class="session-type-filter-buttons">
+                                <button class="session-type-filter-btn active" data-type="individual">Individual</button>
+                                <button class="session-type-filter-btn" data-type="group">Group</button>
+                                <button class="session-type-filter-btn" data-type="cultural">Cultural</button>
+                                <button class="session-type-filter-btn" data-type="emergency">Emergency</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="enhanced-counselor-list">
+                    <h3>Available Counselors</h3>
+                    <div class="counselor-cards" id="counselor-cards">
+                        <div class="enhanced-counselor-card" data-region="north">
+                            <div class="counselor-header">
+                                <h4>Dr. Priya Sharma</h4>
+                                <div class="rating">⭐ 4.8</div>
+                            </div>
+                            <div class="counselor-details">
+                                <div class="specializations">
+                                    <span class="specialty-tag">Family Therapy</span>
+                                    <span class="specialty-tag">Cultural Counseling</span>
+                                    <span class="specialty-tag">Academic Stress</span>
+                                </div>
+                                <div class="cultural-expertise">
+                                    <h5>Cultural Expertise:</h5>
+                                    <p>Joint family dynamics, Marriage counseling, Religious integration</p>
+                                </div>
+                                <div class="languages">
+                                    <span class="lang-badge">Hindi</span>
+                                    <span class="lang-badge">English</span>
+                                    <span class="lang-badge">Punjabi</span>
+                                </div>
+                            </div>
+                            <button class="btn btn--primary" onclick="selectCounselorForBooking('C001')">View Schedule</button>
+                        </div>
+
+                        <div class="enhanced-counselor-card" data-region="south">
+                            <div class="counselor-header">
+                                <h4>Dr. Ravi Kumar</h4>
+                                <div class="rating">⭐ 4.9</div>
+                            </div>
+                            <div class="counselor-details">
+                                <div class="specializations">
+                                    <span class="specialty-tag">Academic Pressure</span>
+                                    <span class="specialty-tag">Career Counseling</span>
+                                    <span class="specialty-tag">Anxiety</span>
+                                </div>
+                                <div class="cultural-expertise">
+                                    <h5>Cultural Expertise:</h5>
+                                    <p>South Indian family systems, Academic excellence culture, Traditional healing</p>
+                                </div>
+                                <div class="languages">
+                                    <span class="lang-badge">Tamil</span>
+                                    <span class="lang-badge">English</span>
+                                    <span class="lang-badge">Telugu</span>
+                                </div>
+                            </div>
+                            <button class="btn btn--primary" onclick="selectCounselorForBooking('C002')">View Schedule</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="booking-calendar" class="booking-calendar hidden">
+                    <h3>Select Date & Time</h3>
+                    <div class="calendar-controls">
+                        <button class="btn btn--outline" onclick="previousWeek()">&lt; Previous Week</button>
+                        <span id="calendar-week">September 16-22, 2025</span>
+                        <button class="btn btn--outline" onclick="nextWeek()">Next Week &gt;</button>
+                    </div>
+                    <div class="calendar-grid" id="calendar-grid">
+                        <!-- Calendar will be populated by JavaScript -->
+                    </div>
+                    <button class="btn btn--outline" onclick="hideBookingCalendar()">Back to Counselors</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enhanced Peer Support Section -->
+        <div id="peer-support-section" class="dashboard-content">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Peer Support Network 🤝</h2>
+                    <p>Connect with trained volunteers and support groups</p>
+                </div>
+
+                <div class="peer-support-tabs">
+                    <button class="peer-tab active" data-tab="volunteers">Peer Volunteers</button>
+                    <button class="peer-tab" data-tab="groups">Support Groups</button>
+                    <button class="peer-tab" data-tab="matching">Smart Matching</button>
+                </div>
+
+                <div id="volunteers-content" class="peer-content active">
+                    <h3>Available Peer Volunteers</h3>
+                    <div class="volunteer-list" id="volunteer-list">
+                        <div class="volunteer-card" data-region="north">
+                            <div class="volunteer-header">
+                                <h4>Volunteer Rohit</h4>
+                                <span class="status-badge online">Online</span>
+                                <span class="certification-badge">Level 3 Certified</span>
+                            </div>
+                            <div class="volunteer-details">
+                                <div class="specializations">
+                                    <span class="specialty-tag">Study Stress</span>
+                                    <span class="specialty-tag">Time Management</span>
+                                    <span class="specialty-tag">Exam Anxiety</span>
+                                </div>
+                                <div class="volunteer-stats">
+                                    <span class="stat">⭐ 4.6</span>
+                                    <span class="stat">45 Sessions</span>
+                                    <span class="stat">North India</span>
+                                </div>
+                                <p class="volunteer-bio">Engineering student who overcame severe exam anxiety, now helps others</p>
+                                <div class="languages">
+                                    <span class="lang-badge">Hindi</span>
+                                    <span class="lang-badge">English</span>
+                                </div>
+                            </div>
+                            <div class="volunteer-actions">
+                                <button class="btn btn--primary btn--sm" onclick="connectWithVolunteer('PV001')">Start Chat</button>
+                                <button class="btn btn--outline btn--sm" onclick="viewVolunteerProfile('PV001')">View Profile</button>
+                            </div>
+                        </div>
+
+                        <div class="volunteer-card" data-region="south">
+                            <div class="volunteer-header">
+                                <h4>Volunteer Deepika</h4>
+                                <span class="status-badge online">Online</span>
+                                <span class="certification-badge">Level 2 Certified</span>
+                            </div>
+                            <div class="volunteer-details">
+                                <div class="specializations">
+                                    <span class="specialty-tag">Academic Pressure</span>
+                                    <span class="specialty-tag">Family Expectations</span>
+                                    <span class="specialty-tag">Cultural Adjustment</span>
+                                </div>
+                                <div class="volunteer-stats">
+                                    <span class="stat">⭐ 4.8</span>
+                                    <span class="stat">32 Sessions</span>
+                                    <span class="stat">South India</span>
+                                </div>
+                                <p class="volunteer-bio">Medical student who navigated family pressure, specializes in academic stress</p>
+                                <div class="languages">
+                                    <span class="lang-badge">Tamil</span>
+                                    <span class="lang-badge">English</span>
+                                </div>
+                            </div>
+                            <div class="volunteer-actions">
+                                <button class="btn btn--primary btn--sm" onclick="connectWithVolunteer('PV002')">Start Chat</button>
+                                <button class="btn btn--outline btn--sm" onclick="viewVolunteerProfile('PV002')">View Profile</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="groups-content" class="peer-content">
+                    <h3>Support Groups</h3>
+                    <div class="support-groups-list">
+                        <div class="support-group-card">
+                            <div class="group-header">
+                                <h4>Exam Warriors</h4>
+                                <span class="member-count">127 Members</span>
+                            </div>
+                            <p>Support for students dealing with competitive exam pressure</p>
+                            <div class="group-topics">
+                                <span class="topic-tag">Study Strategies</span>
+                                <span class="topic-tag">Stress Management</span>
+                                <span class="topic-tag">Time Planning</span>
+                            </div>
+                            <div class="group-moderator">Moderator: Volunteer Priya</div>
+                            <button class="btn btn--primary btn--sm" onclick="joinGroup('exam_warriors')">Join Group</button>
+                        </div>
+
+                        <div class="support-group-card">
+                            <div class="group-header">
+                                <h4>Family Expectations Support</h4>
+                                <span class="member-count">89 Members</span>
+                            </div>
+                            <p>Safe space to discuss family pressure and expectations</p>
+                            <div class="group-topics">
+                                <span class="topic-tag">Communication</span>
+                                <span class="topic-tag">Setting Boundaries</span>
+                                <span class="topic-tag">Cultural Balance</span>
+                            </div>
+                            <div class="group-moderator">Moderator: Volunteer Rahul</div>
+                            <button class="btn btn--primary btn--sm" onclick="joinGroup('family_support')">Join Group</button>
+                        </div>
+
+                        <div class="support-group-card">
+                            <div class="group-header">
+                                <h4>Homesick Heroes</h4>
+                                <span class="member-count">156 Members</span>
+                            </div>
+                            <p>For students adjusting to life away from home</p>
+                            <div class="group-topics">
+                                <span class="topic-tag">Homesickness</span>
+                                <span class="topic-tag">Building Community</span>
+                                <span class="topic-tag">Cultural Adjustment</span>
+                            </div>
+                            <div class="group-moderator">Moderator: Volunteer Sneha</div>
+                            <button class="btn btn--primary btn--sm" onclick="joinGroup('homesick_support')">Join Group</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="matching-content" class="peer-content">
+                    <h3>Smart Peer Matching</h3>
+                    <div class="matching-container">
+                        <div class="matching-form">
+                            <h4>Find Your Perfect Peer Match</h4>
+                            <div class="form-group">
+                                <label class="form-label">Primary Concern</label>
+                                <div class="concern-buttons">
+                                    <button class="concern-btn" data-concern="academic">Academic Stress</button>
+                                    <button class="concern-btn" data-concern="family">Family Pressure</button>
+                                    <button class="concern-btn" data-concern="social">Social Anxiety</button>
+                                    <button class="concern-btn" data-concern="career">Career Confusion</button>
+                                    <button class="concern-btn" data-concern="cultural">Cultural Issues</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Preferred Support Style</label>
+                                <div class="style-buttons">
+                                    <button class="style-btn" data-style="listening">Good Listener</button>
+                                    <button class="style-btn" data-style="advice">Practical Advice</button>
+                                    <button class="style-btn" data-style="motivational">Motivational</button>
+                                    <button class="style-btn" data-style="empathetic">Empathetic</button>
+                                </div>
+                            </div>
+                            <button class="btn btn--primary" onclick="findPeerMatch()">Find My Match</button>
+                        </div>
+
+                        <div class="matching-results hidden" id="matching-results">
+                            <h4>Your Perfect Match Found! 🎯</h4>
+                            <div class="matched-peer">
+                                <h5>Volunteer Match</h5>
+                                <p>Based on your preferences, we found someone who understands your situation and can provide the support you need.</p>
+                                <button class="btn btn--primary" onclick="startMatchedChat()">Start Anonymous Chat</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cultural Wellness Section (NEW) -->
+        <div id="cultural-wellness-section" class="dashboard-content">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Cultural Wellness Hub 🕉️</h2>
+                    <p>Traditional practices and regional mental wellness approaches</p>
+                </div>
+
+                <div class="cultural-practices">
+                    <h3>Traditional Practices for <span id="current-region">North India</span></h3>
+                    <div class="practices-grid" id="practices-grid">
+                        <div class="practice-card">
+                            <div class="practice-icon">🧘‍♀️</div>
+                            <div class="practice-info">
+                                <h4>Meditation & Mindfulness</h4>
+                                <p>Traditional Dhyana practices adapted for student life</p>
+                                <div class="practice-meta">
+                                    <span class="duration">10-20 minutes</span>
+                                    <span class="benefits">Stress reduction • Focus improvement • Emotional regulation</span>
+                                </div>
+                                <button class="btn btn--primary btn--sm" onclick="startPractice('meditation')">Start Practice</button>
+                            </div>
+                        </div>
+
+                        <div class="practice-card">
+                            <div class="practice-icon">🌬️</div>
+                            <div class="practice-info">
+                                <h4>Pranayama Breathing</h4>
+                                <p>Ancient breathing techniques for anxiety management</p>
+                                <div class="practice-meta">
+                                    <span class="duration">5-15 minutes</span>
+                                    <span class="benefits">Anxiety relief • Better sleep • Mental clarity</span>
+                                </div>
+                                <button class="btn btn--primary btn--sm" onclick="startPractice('pranayama')">Start Practice</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cultural-content">
+                    <h3>Regional Mental Health Insights</h3>
+                    <div class="insights-container" id="cultural-insights">
+                        <div class="insight-card">
+                            <h4>Common Stressors in Your Region</h4>
+                            <ul id="regional-stressors">
+                                <li>Family expectations and marriage pressure</li>
+                                <li>Intense career competition</li>
+                                <li>Balancing traditional values with modern life</li>
+                            </ul>
+                        </div>
+
+                        <div class="insight-card">
+                            <h4>Cultural Coping Strategies</h4>
+                            <div class="coping-strategies" id="cultural-coping">
+                                <div class="strategy">
+                                    <h5>🌿 Ayurvedic Approach</h5>
+                                    <p>Herbal remedies and lifestyle changes for mental balance</p>
+                                </div>
+                                <div class="strategy">
+                                    <h5>🙏 Spiritual Practices</h5>
+                                    <p>Prayer, satsang, and community gatherings for support</p>
+                                </div>
+                                <div class="strategy">
+                                    <h5>👨‍👩‍👧‍👦 Family Integration</h5>
+                                    <p>Involving family in healing while maintaining boundaries</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -230,33 +673,63 @@
                     <div class="filter-group">
                         <label class="form-label">Filter by Language</label>
                         <div class="language-filter-buttons">
-                            <button class="filter-btn active" id="filter-all">All Languages</button>
-                            <button class="filter-btn" id="filter-en">🇺🇸 English</button>
-                            <button class="filter-btn" id="filter-hi">🇮🇳 Hindi</button>
-                            <button class="filter-btn" id="filter-ta">🇮🇳 Tamil</button>
-                            <button class="filter-btn" id="filter-bn">🇮🇳 Bengali</button>
+                            <button class="filter-btn active" data-filter="all">All Languages</button>
+                            <button class="filter-btn" data-filter="en">🇺🇸 English</button>
+                            <button class="filter-btn" data-filter="hi">🇮🇳 Hindi</button>
+                            <button class="filter-btn" data-filter="ta">🇮🇳 Tamil</button>
+                            <button class="filter-btn" data-filter="bn">🇮🇳 Bengali</button>
                         </div>
                     </div>
                     <div class="filter-group">
                         <label class="form-label">Content Type</label>
                         <div class="type-filter-buttons">
-                            <button class="type-btn active" id="type-all">
+                            <button class="type-btn active" data-type="all">
                                 <span class="type-icon">📁</span>
                                 All Types
                             </button>
-                            <button class="type-btn" id="type-video">
+                            <button class="type-btn" data-type="video">
                                 <span class="type-icon">🎥</span>
                                 Videos
                             </button>
-                            <button class="type-btn" id="type-audio">
+                            <button class="type-btn" data-type="audio">
                                 <span class="type-icon">🎧</span>
                                 Audio
                             </button>
-                            <button class="type-btn" id="type-article">
+                            <button class="type-btn" data-type="article">
                                 <span class="type-icon">📄</span>
                                 Articles
                             </button>
                         </div>
+                    </div>
+                </div>
+
+                <div class="resource-categories">
+                    <h3>Browse by Category</h3>
+                    <div class="category-buttons">
+                        <button class="category-btn active" data-category="all">
+                            <span class="category-icon">📚</span>
+                            All Topics
+                        </button>
+                        <button class="category-btn" data-category="academic">
+                            <span class="category-icon">📚</span>
+                            Academic Stress
+                        </button>
+                        <button class="category-btn" data-category="anxiety">
+                            <span class="category-icon">💭</span>
+                            Anxiety
+                        </button>
+                        <button class="category-btn" data-category="wellness">
+                            <span class="category-icon">🌱</span>
+                            Wellness
+                        </button>
+                        <button class="category-btn" data-category="sleep">
+                            <span class="category-icon">😴</span>
+                            Sleep
+                        </button>
+                        <button class="category-btn" data-category="relationships">
+                            <span class="category-icon">❤️</span>
+                            Relationships
+                        </button>
                     </div>
                 </div>
 
@@ -271,8 +744,8 @@
                                 <span class="languages">EN, HI, TA</span>
                             </div>
                             <div class="resource-actions">
-                                <button class="btn btn--primary btn--sm" id="play-v001">Watch</button>
-                                <button class="btn btn--outline btn--sm" id="download-v001">Download</button>
+                                <button class="btn btn--primary btn--sm" onclick="playResource('V001')">Watch</button>
+                                <button class="btn btn--outline btn--sm" onclick="downloadResource('V001')">Download</button>
                             </div>
                         </div>
                     </div>
@@ -287,8 +760,24 @@
                                 <span class="languages">EN, HI, TA, BN</span>
                             </div>
                             <div class="resource-actions">
-                                <button class="btn btn--primary btn--sm" id="play-a001">Play</button>
-                                <button class="btn btn--outline btn--sm" id="download-a001">Download</button>
+                                <button class="btn btn--primary btn--sm" onclick="playResource('A001')">Play</button>
+                                <button class="btn btn--outline btn--sm" onclick="downloadResource('A001')">Download</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card" data-languages="en,hi,ta,bn,mr" data-category="wellness" data-type="article">
+                        <div class="resource-thumbnail">📋</div>
+                        <div class="resource-info">
+                            <h4>10 Signs You Should Talk to Someone</h4>
+                            <p>Recognizing when professional help might be beneficial</p>
+                            <div class="resource-meta">
+                                <span class="duration">5 min read</span>
+                                <span class="languages">EN, HI, TA, BN, MR</span>
+                            </div>
+                            <div class="resource-actions">
+                                <button class="btn btn--primary btn--sm" onclick="readResource('AR001')">Read</button>
+                                <button class="btn btn--outline btn--sm" onclick="downloadResource('AR001')">Download</button>
                             </div>
                         </div>
                     </div>
@@ -296,7 +785,7 @@
             </div>
         </div>
 
-        <!-- Support Section -->
+        <!-- Find Support Section -->
         <div id="support-section" class="dashboard-content">
             <div class="container">
                 <div class="section-header">
@@ -305,9 +794,9 @@
                 </div>
 
                 <div class="support-tabs">
-                    <button class="support-tab active" id="tab-campus">Campus Resources</button>
-                    <button class="support-tab" id="tab-counselors">Offline Counselors</button>
-                    <button class="support-tab" id="tab-emergency">Emergency</button>
+                    <button class="support-tab active" data-tab="campus">Campus Resources</button>
+                    <button class="support-tab" data-tab="counselors">Offline Counselors</button>
+                    <button class="support-tab" data-tab="emergency">Emergency</button>
                 </div>
 
                 <div id="campus-content" class="support-content active">
@@ -344,10 +833,15 @@
                                     <span class="lang-badge">Hindi</span>
                                     <span class="lang-badge">Gujarati</span>
                                 </div>
+                                <div class="counselor-specialties">
+                                    <span class="specialty-tag">Student Counseling</span>
+                                    <span class="specialty-tag">Career Guidance</span>
+                                </div>
                                 <div class="counselor-contact">
                                     <p>📍 Student Wellness Center, Building A, Room 201</p>
                                     <p>📞 +91-XXX-XXX-XXXX</p>
                                     <p>🕒 Mon-Fri 10AM-4PM</p>
+                                    <span class="walk-in-badge">Walk-ins Welcome</span>
                                 </div>
                                 <button class="btn btn--primary btn--sm">Contact Counselor</button>
                             </div>
@@ -373,63 +867,31 @@
             </div>
         </div>
 
-        <!-- Session Booking Section -->
-        <div id="session-section" class="dashboard-content">
-            <div class="container">
-                <div class="section-header">
-                    <h2>Counseling Sessions 📅</h2>
-                    <p>Book anonymous sessions with qualified counselors</p>
-                </div>
-
-                <div class="session-booking">
-                    <h3>Available Time Slots - Today</h3>
-                    <div class="time-slots-grid">
-                        <button class="time-slot available" id="slot-9am">
-                            <span class="time">9:00 AM</span>
-                            <span class="duration">60 min</span>
-                        </button>
-                        <button class="time-slot booked">
-                            <span class="time">10:00 AM</span>
-                            <span class="duration">Booked</span>
-                        </button>
-                        <button class="time-slot available" id="slot-11am">
-                            <span class="time">11:00 AM</span>
-                            <span class="duration">60 min</span>
-                        </button>
-                        <button class="time-slot available" id="slot-2pm">
-                            <span class="time">2:00 PM</span>
-                            <span class="duration">60 min</span>
-                        </button>
-                        <button class="time-slot available" id="slot-3pm">
-                            <span class="time">3:00 PM</span>
-                            <span class="duration">60 min</span>
-                        </button>
-                        <button class="time-slot available" id="slot-4pm">
-                            <span class="time">4:00 PM</span>
-                            <span class="duration">60 min</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Student Bottom Navigation -->
+        <!-- Enhanced Bottom Navigation -->
         <div class="bottom-nav">
-            <button class="nav-item active" id="nav-mood">
+            <button class="nav-item active" onclick="showSection('mood-section')">
                 <span class="nav-icon">😊</span>
                 <span class="nav-label">Mood</span>
             </button>
-            <button class="nav-item" id="nav-resources">
+            <button class="nav-item" onclick="showSection('ai-assistant-section')">
+                <span class="nav-icon">🤖</span>
+                <span class="nav-label">AI Assistant</span>
+            </button>
+            <button class="nav-item" onclick="showSection('enhanced-booking-section')">
+                <span class="nav-icon">📅</span>
+                <span class="nav-label">Book</span>
+            </button>
+            <button class="nav-item" onclick="showSection('peer-support-section')">
+                <span class="nav-icon">🤝</span>
+                <span class="nav-label">Peers</span>
+            </button>
+            <button class="nav-item" onclick="showSection('cultural-wellness-section')">
+                <span class="nav-icon">🕉️</span>
+                <span class="nav-label">Culture</span>
+            </button>
+            <button class="nav-item" onclick="showSection('resources-section')">
                 <span class="nav-icon">📚</span>
                 <span class="nav-label">Resources</span>
-            </button>
-            <button class="nav-item" id="nav-support">
-                <span class="nav-icon">🏥</span>
-                <span class="nav-label">Find Support</span>
-            </button>
-            <button class="nav-item" id="nav-sessions">
-                <span class="nav-icon">📅</span>
-                <span class="nav-label">Sessions</span>
             </button>
         </div>
     </div>
@@ -444,7 +906,13 @@
                         <p>Dr. Anonymous #C4821</p>
                     </div>
                     <div class="header-actions">
-                        <button class="btn btn--outline btn--sm" id="counselor-logout">Logout</button>
+                        <div class="language-switcher">
+                            <button class="language-btn active" data-lang="en">🇺🇸 EN</button>
+                            <button class="language-btn" data-lang="hi">🇮🇳 HI</button>
+                            <button class="language-btn" data-lang="ta">🇮🇳 TA</button>
+                            <button class="language-btn" data-lang="bn">🇮🇳 BN</button>
+                        </div>
+                        <button class="btn btn--outline btn--sm" onclick="logout()">Logout</button>
                     </div>
                 </div>
             </div>
@@ -482,7 +950,8 @@
                             <canvas id="studentChart1"></canvas>
                         </div>
                         <div class="student-actions">
-                            <button class="btn btn--primary btn--sm" id="view-student-1">View Details</button>
+                            <button class="btn btn--primary btn--sm" onclick="viewStudentDetails('ANON-ST001')">View Details</button>
+                            <button class="btn btn--outline btn--sm" onclick="recommendResources('ANON-ST001')">Recommend Resources</button>
                         </div>
                     </div>
                 </div>
@@ -494,7 +963,7 @@
             <div class="container">
                 <div class="section-header">
                     <h2>Session Reporting 📋</h2>
-                    <p>Submit session reports</p>
+                    <p>Submit session reports with direct interaction controls</p>
                 </div>
 
                 <div class="report-form">
@@ -503,24 +972,34 @@
                         <div class="form-group">
                             <label class="form-label">Select Student</label>
                             <div class="student-selection-buttons">
-                                <button type="button" class="student-btn" id="select-st001">ANON-ST001</button>
-                                <button type="button" class="student-btn" id="select-st002">ANON-ST002</button>
-                                <button type="button" class="student-btn" id="select-st003">ANON-ST003</button>
+                                <button type="button" class="student-btn" data-student="ANON-ST001">ANON-ST001</button>
+                                <button type="button" class="student-btn" data-student="ANON-ST002">ANON-ST002</button>
+                                <button type="button" class="student-btn" data-student="ANON-ST003">ANON-ST003</button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Session Type</label>
+                            <div class="session-type-buttons">
+                                <button type="button" class="session-type-btn" data-type="initial">Initial Assessment</button>
+                                <button type="button" class="session-type-btn" data-type="regular">Regular Session</button>
+                                <button type="button" class="session-type-btn" data-type="followup">Follow-up</button>
+                                <button type="button" class="session-type-btn" data-type="crisis">Crisis Intervention</button>
                             </div>
                         </div>
                         
                         <div class="form-group">
                             <label class="form-label">Risk Assessment</label>
                             <div class="risk-assessment-buttons">
-                                <button type="button" class="risk-btn low" id="risk-low">
+                                <button type="button" class="risk-btn low" data-risk="low">
                                     <span class="risk-icon">✅</span>
                                     Low Risk
                                 </button>
-                                <button type="button" class="risk-btn medium" id="risk-medium">
+                                <button type="button" class="risk-btn medium" data-risk="medium">
                                     <span class="risk-icon">⚠️</span>
                                     Medium Risk
                                 </button>
-                                <button type="button" class="risk-btn high" id="risk-high">
+                                <button type="button" class="risk-btn high" data-risk="high">
                                     <span class="risk-icon">🚨</span>
                                     High Risk
                                 </button>
@@ -528,11 +1007,23 @@
                         </div>
                         
                         <div class="form-group">
-                            <label class="form-label">Session Notes</label>
-                            <textarea class="form-control" rows="4" placeholder="Session notes..."></textarea>
+                            <label class="form-label">Session Rating (1-5)</label>
+                            <div class="rating-slider-container">
+                                <input type="range" min="1" max="5" value="3" class="rating-slider" id="session-rating">
+                                <div class="rating-labels">
+                                    <span>Poor</span>
+                                    <span class="rating-value">3</span>
+                                    <span>Excellent</span>
+                                </div>
+                            </div>
                         </div>
                         
-                        <button type="submit" class="btn btn--primary" id="submit-report-btn">Submit Report</button>
+                        <div class="form-group">
+                            <label class="form-label">Recommended Actions</label>
+                            <textarea class="form-control" rows="4" placeholder="Recommended follow-up actions..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn--primary">Submit Report</button>
                     </form>
                 </div>
             </div>
@@ -540,11 +1031,11 @@
 
         <!-- Counselor Bottom Navigation -->
         <div class="bottom-nav">
-            <button class="nav-item active" id="nav-students">
+            <button class="nav-item active" onclick="showSection('students-section')">
                 <span class="nav-icon">👥</span>
                 <span class="nav-label">Students</span>
             </button>
-            <button class="nav-item" id="nav-reports">
+            <button class="nav-item" onclick="showSection('reporting-section')">
                 <span class="nav-icon">📋</span>
                 <span class="nav-label">Reports</span>
             </button>
@@ -558,11 +1049,17 @@
                 <div class="header-content">
                     <div class="header-info">
                         <h1>Admin Dashboard 📊</h1>
-                        <p>Mental Health Analytics & Intervention Planning</p>
+                        <p>Mental Health Analytics & Cultural Intervention Planning</p>
                     </div>
                     <div class="header-actions">
-                        <button class="btn btn--outline btn--sm" id="export-analytics">Export Report</button>
-                        <button class="btn btn--outline btn--sm" id="admin-logout">Logout</button>
+                        <div class="language-switcher">
+                            <button class="language-btn active" data-lang="en">🇺🇸 EN</button>
+                            <button class="language-btn" data-lang="hi">🇮🇳 HI</button>
+                            <button class="language-btn" data-lang="ta">🇮🇳 TA</button>
+                            <button class="language-btn" data-lang="bn">🇮🇳 BN</button>
+                        </div>
+                        <button class="btn btn--outline btn--sm" onclick="exportAnalytics()">Export Report</button>
+                        <button class="btn btn--outline btn--sm" onclick="logout()">Logout</button>
                     </div>
                 </div>
             </div>
@@ -571,6 +1068,16 @@
         <!-- Analytics Overview -->
         <div id="analytics-section" class="dashboard-content active">
             <div class="container">
+                <div class="analytics-filters">
+                    <h3>Analytics Filters</h3>
+                    <div class="filter-buttons">
+                        <button class="analytics-filter-btn active" data-period="week">This Week</button>
+                        <button class="analytics-filter-btn" data-period="month">This Month</button>
+                        <button class="analytics-filter-btn" data-period="quarter">This Quarter</button>
+                        <button class="analytics-filter-btn" data-period="year">This Year</button>
+                    </div>
+                </div>
+
                 <div class="admin-stats-grid">
                     <div class="admin-stat-card">
                         <div class="stat-icon">👥</div>
@@ -607,7 +1114,7 @@
                     </div>
                     
                     <div class="admin-chart-container">
-                        <h3>Language Distribution</h3>
+                        <h3>Regional Distribution</h3>
                         <div class="chart-container" style="position: relative; height: 300px;">
                             <canvas id="languageChart"></canvas>
                         </div>
@@ -618,7 +1125,7 @@
 
         <!-- Admin Bottom Navigation -->
         <div class="bottom-nav">
-            <button class="nav-item active" id="nav-analytics">
+            <button class="nav-item active" onclick="showSection('analytics-section')">
                 <span class="nav-icon">📊</span>
                 <span class="nav-label">Analytics</span>
             </button>
@@ -630,7 +1137,7 @@
         <div class="modal-content">
             <h3 id="modalTitle">Success!</h3>
             <p id="modalMessage">Your action was completed successfully.</p>
-            <button class="btn btn--primary" id="close-modal">OK</button>
+            <button class="btn btn--primary" onclick="closeModal()">OK</button>
         </div>
     </div>
 
