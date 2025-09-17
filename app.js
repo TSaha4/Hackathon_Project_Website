@@ -281,14 +281,28 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initializeApp() {
-    console.log('Starting enhanced app on landing page...');
-    showScreen('landing-page');
+    console.log('Starting enhanced app on role selection page...');
+    
+    // Initialize browser history management first
+    initializeHistory();
+    
+    // Check if there's a page parameter in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const page = urlParams.get('page');
+    
+    if (page) {
+        showScreen(page, false); // Don't add to history on initial load
+    } else {
+        showScreen('role-selection-page', false); // Don't add to history on initial load
+    }
+    
     setupEventListeners();
     setupSliders();
     setupLanguageSwitchers();
     setupResourceFilters();
     updateLanguageDisplay();
     initializeChatMessages();
+    initializeCounters();
 }
 
 function setupEventListeners() {
@@ -366,15 +380,15 @@ function selectRole(role) {
     console.log('Selecting role:', role);
     currentRole = role;
     
-    // Add visual feedback
+    // Add visual feedback using CSS classes instead of inline styles
     document.querySelectorAll('.role-card').forEach(card => {
-        card.style.borderColor = 'var(--color-card-border)';
+        card.classList.remove('selected');
     });
     
-    // Highlight selected card
+    // Highlight selected role
     const selectedCard = document.querySelector(`[data-role="${role}"]`);
     if (selectedCard) {
-        selectedCard.style.borderColor = 'var(--color-primary)';
+        selectedCard.classList.add('selected');
     }
     
     // Navigate to appropriate login screen
@@ -700,8 +714,15 @@ function setupResourceFilters() {
 }
 
 // Core navigation functions
-function showScreen(screenId) {
+function showScreen(screenId, addToHistory = true) {
     console.log('Showing screen:', screenId);
+    
+    // Add to browser history if requested
+    if (addToHistory) {
+        const currentUrl = new URL(window.location);
+        currentUrl.searchParams.set('page', screenId);
+        window.history.pushState({ screenId: screenId }, '', currentUrl);
+    }
     
     // Hide all screens
     document.querySelectorAll('.screen').forEach(screen => {
@@ -729,6 +750,41 @@ function showScreen(screenId) {
     }
 }
 
+// Handle browser back/forward buttons
+function handlePopState(event) {
+    console.log('Popstate event:', event.state);
+    
+    if (event.state && event.state.screenId) {
+        // Navigate to the screen from history without adding to history
+        showScreen(event.state.screenId, false);
+    } else {
+        // Check URL parameters for page
+        const urlParams = new URLSearchParams(window.location.search);
+        const page = urlParams.get('page');
+        if (page) {
+            showScreen(page, false);
+        } else {
+            // Default to role selection page
+            showScreen('role-selection-page', false);
+        }
+    }
+}
+
+// Initialize browser history management
+function initializeHistory() {
+    // Listen for browser back/forward button clicks
+    window.addEventListener('popstate', handlePopState);
+    
+    // Set initial state if no page parameter in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const page = urlParams.get('page');
+    if (!page) {
+        const currentUrl = new URL(window.location);
+        currentUrl.searchParams.set('page', 'role-selection-page');
+        window.history.replaceState({ screenId: 'role-selection-page' }, '', currentUrl);
+    }
+}
+
 // Enhanced login functions
 function loginAsStudent() {
     console.log('Logging in as student...');
@@ -743,9 +799,9 @@ function loginAsStudent() {
     }
     
     currentUser = 'ANON-ST7832';
-    showScreen('student-dashboard');
+    showScreen('landing-page');
     setTimeout(() => {
-        initializeStudentDashboard();
+        initializeHomePage();
         updateRegionalContent();
     }, 200);
 }
@@ -776,7 +832,12 @@ function logout() {
     chatMessages = [];
     selectedCounselor = null;
     currentWeekOffset = 0;
-    showScreen('landing-page');
+    
+    // Navigate to role selection page and clear history
+    const currentUrl = new URL(window.location);
+    currentUrl.searchParams.set('page', 'role-selection-page');
+    window.history.replaceState({ screenId: 'role-selection-page' }, '', currentUrl);
+    showScreen('role-selection-page', false);
     
     // Clean up charts safely
     try {
@@ -1078,7 +1139,7 @@ function updateCounselorList() {
     document.querySelectorAll('.enhanced-counselor-card').forEach(card => {
         const cardRegion = card.dataset.region;
         let showCard = selectedRegion === 'all' || cardRegion === selectedRegion;
-        card.style.display = showCard ? 'block' : 'none';
+        card.classList.toggle('hidden', !showCard);
     });
 }
 
@@ -1091,7 +1152,7 @@ function selectCounselorForBooking(counselorId) {
     const counselorList = document.querySelector('.enhanced-counselor-list');
     
     if (calendar && counselorList) {
-        counselorList.style.display = 'none';
+        counselorList.classList.add('hidden');
         calendar.classList.remove('hidden');
         generateCalendar();
     }
@@ -1102,7 +1163,7 @@ function hideBookingCalendar() {
     const counselorList = document.querySelector('.enhanced-counselor-list');
     
     if (calendar && counselorList) {
-        counselorList.style.display = 'block';
+        counselorList.classList.remove('hidden');
         calendar.classList.add('hidden');
     }
 }
@@ -1132,9 +1193,7 @@ function generateCalendar() {
     dayNames.forEach(day => {
         const dayHeader = document.createElement('div');
         dayHeader.textContent = day;
-        dayHeader.style.fontWeight = 'bold';
-        dayHeader.style.textAlign = 'center';
-        dayHeader.style.padding = 'var(--space-8)';
+        dayHeader.className = 'calendar-day-header';
         calendarGrid.appendChild(dayHeader);
     });
     
@@ -1262,9 +1321,9 @@ function updateVolunteerList() {
         const cardRegion = card.dataset.region;
         // Show all volunteers but highlight those from same region
         if (cardRegion === currentRegion) {
-            card.style.border = '2px solid var(--color-primary)';
+            card.classList.add('highlighted');
         } else {
-            card.style.border = '1px solid var(--color-card-border)';
+            card.classList.remove('highlighted');
         }
     });
 }
@@ -1344,7 +1403,7 @@ function findPeerMatch() {
     const matchingResults = document.getElementById('matching-results');
     
     if (matchingForm && matchingResults) {
-        matchingForm.style.display = 'none';
+        matchingForm.classList.add('hidden');
         matchingResults.classList.remove('hidden');
     }
     
@@ -1366,7 +1425,7 @@ function startMatchedChat() {
         const matchingResults = document.getElementById('matching-results');
         
         if (matchingForm && matchingResults) {
-            matchingForm.style.display = 'block';
+            matchingForm.classList.remove('hidden');
             matchingResults.classList.add('hidden');
         }
         
@@ -1545,11 +1604,7 @@ function selectMoodOption(option) {
     const questionsDiv = document.getElementById('mood-questions');
     if (questionsDiv) {
         questionsDiv.classList.remove('hidden');
-        questionsDiv.style.opacity = '0';
-        setTimeout(() => {
-            questionsDiv.style.opacity = '1';
-            questionsDiv.style.transition = 'opacity 0.3s ease';
-        }, 100);
+        questionsDiv.classList.add('fade-in');
     }
 }
 
@@ -1682,12 +1737,12 @@ function createMoodChart() {
                 datasets: [{
                     label: 'Mood Level',
                     data: chartData.map(entry => entry.value),
-                    borderColor: '#1FB8CD',
-                    backgroundColor: 'rgba(31, 184, 205, 0.1)',
+                    borderColor: '#6c3ea6',
+                    backgroundColor: 'rgba(108, 62, 166, 0.12)',
                     borderWidth: 3,
                     fill: true,
                     tension: 0.4,
-                    pointBackgroundColor: '#1FB8CD',
+                    pointBackgroundColor: '#6c3ea6',
                     pointBorderColor: '#fff',
                     pointBorderWidth: 2,
                     pointRadius: 6
@@ -1786,7 +1841,7 @@ function updateResourceDisplay() {
             }
         }
         
-        card.style.display = showCard ? 'block' : 'none';
+        card.classList.toggle('hidden', !showCard);
     });
 }
 
@@ -1876,16 +1931,16 @@ function createMoodTrendsChart() {
                 datasets: [{
                     label: 'Current Week',
                     data: adminData.moodTrends.current,
-                    borderColor: '#1FB8CD',
-                    backgroundColor: 'rgba(31, 184, 205, 0.1)',
+                    borderColor: '#6c3ea6',
+                    backgroundColor: 'rgba(108, 62, 166, 0.12)',
                     borderWidth: 3,
                     fill: true,
                     tension: 0.4
                 }, {
                     label: 'Previous Week',
                     data: adminData.moodTrends.previous,
-                    borderColor: '#FFC185',
-                    backgroundColor: 'rgba(255, 193, 133, 0.1)',
+                    borderColor: '#fd8a37',
+                    backgroundColor: 'rgba(253, 138, 55, 0.12)',
                     borderWidth: 2,
                     fill: false,
                     tension: 0.4
@@ -1935,10 +1990,10 @@ function createRegionalChart() {
                 datasets: [{
                     data: Object.values(data),
                     backgroundColor: [
-                        '#1FB8CD',
-                        '#FFC185', 
-                        '#B4413C',
-                        '#ECEBD5'
+                        '#6c3ea6',
+                        '#fd8a37', 
+                        '#ef4444',
+                        '#e9dccb'
                     ]
                 }]
             },
@@ -2137,10 +2192,10 @@ function closeModal() {
 
 // Enhanced interaction effects
 function addButtonClickEffect(button) {
-    if (button && button.style) {
-        button.style.transform = 'scale(0.95)';
+    if (button) {
+        button.classList.add('clicked');
         setTimeout(() => {
-            button.style.transform = 'scale(1)';
+            button.classList.remove('clicked');
         }, 150);
     }
 }
@@ -2222,3 +2277,212 @@ setInterval(() => {
         console.log('Auto-saving enhanced user data securely with cultural context...');
     }
 }, 30000);
+
+// Landing Page Functionality
+function initializeLandingPage() {
+    // Handle READ MORE button click
+    const readMoreBtn = document.querySelector('.hero-section .btn--primary');
+    if (readMoreBtn) {
+        readMoreBtn.addEventListener('click', function() {
+            const roleSelectionSection = document.querySelector('.role-selection-section');
+            if (roleSelectionSection) {
+                roleSelectionSection.classList.remove('hidden');
+                roleSelectionSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
+    
+    // Handle LOGIN button click
+    const loginBtn = document.querySelector('.landing-header .btn--primary');
+    if (loginBtn) {
+        loginBtn.addEventListener('click', function() {
+            const roleSelectionSection = document.querySelector('.role-selection-section');
+            if (roleSelectionSection) {
+                roleSelectionSection.classList.remove('hidden');
+                roleSelectionSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
+    
+    // Handle pagination dots
+    const dots = document.querySelectorAll('.pagination-dots .dot');
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', function() {
+            // Remove active class from all dots
+            dots.forEach(d => d.classList.remove('active'));
+            // Add active class to clicked dot
+            dot.classList.add('active');
+            
+            // Here you could add carousel functionality if needed
+            console.log('Pagination dot clicked:', index);
+        });
+    });
+    
+    // Handle search functionality
+    const searchInput = document.querySelector('.search-input');
+    const searchBtn = document.querySelector('.search-btn');
+    
+    if (searchInput) {
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch(this.value);
+            }
+        });
+    }
+    
+    if (searchBtn) {
+        searchBtn.addEventListener('click', function() {
+            const searchValue = searchInput ? searchInput.value : '';
+            performSearch(searchValue);
+        });
+    }
+}
+
+function performSearch(query) {
+    if (query.trim()) {
+        console.log('Searching for:', query);
+        // Here you could implement actual search functionality
+        showModal('Search', `Searching for "${query}"... This feature will be implemented in future updates.`);
+    }
+}
+
+// Initialize landing page when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initializeLandingPage();
+});
+
+// Home Page Functions
+function initializeHomePage() {
+    console.log('Initializing home page...');
+    // Animate counters
+    animateCounters();
+    
+    // Initialize mood tracking
+    initializeMoodTracking();
+}
+
+function initializeMoodTracking() {
+    console.log('Initializing mood tracking...');
+    
+    const moodOptions = document.querySelectorAll('.mood-option');
+    const saveMoodBtn = document.getElementById('save-mood');
+    const skipMoodBtn = document.getElementById('skip-mood');
+    let selectedMood = null;
+    
+    // Handle mood selection
+    moodOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            // Remove previous selection
+            moodOptions.forEach(opt => opt.classList.remove('selected'));
+            
+            // Select current option
+            this.classList.add('selected');
+            selectedMood = parseInt(this.dataset.mood);
+            
+            // Enable save button
+            if (saveMoodBtn) {
+                saveMoodBtn.disabled = false;
+            }
+        });
+    });
+    
+    // Handle save mood
+    if (saveMoodBtn) {
+        saveMoodBtn.addEventListener('click', function() {
+            if (selectedMood) {
+                console.log('Saving mood:', selectedMood);
+                // Add to mood history
+                const moodEntry = {
+                    value: selectedMood,
+                    timestamp: new Date().toISOString(),
+                    region: currentRegion
+                };
+                moodHistory.push(moodEntry);
+                
+                // Show success message
+                showModal('Mood Saved', `Your mood (${selectedMood}/5) has been saved successfully!`);
+                
+                // Reset selection
+                moodOptions.forEach(opt => opt.classList.remove('selected'));
+                selectedMood = null;
+                saveMoodBtn.disabled = true;
+            }
+        });
+    }
+    
+    // Handle skip mood
+    if (skipMoodBtn) {
+        skipMoodBtn.addEventListener('click', function() {
+            console.log('Mood tracking skipped');
+            showModal('Skipped', 'You can track your mood anytime from the dashboard.');
+        });
+    }
+}
+
+function goToDashboard() {
+    console.log('Navigating to dashboard based on role:', currentRole);
+    
+    if (!currentRole) {
+        showModal('Error', 'Please select a role first.');
+        return;
+    }
+    
+    switch (currentRole) {
+        case 'student':
+            console.log('Navigating to student dashboard...');
+            showScreen('student-dashboard');
+            setTimeout(() => {
+                initializeStudentDashboard();
+                updateRegionalContent();
+            }, 200);
+            break;
+        case 'counselor':
+            console.log('Navigating to counselor dashboard...');
+            showScreen('counselor-dashboard');
+            setTimeout(() => {
+                initializeCounselorDashboard();
+            }, 200);
+            break;
+        case 'admin':
+            console.log('Navigating to admin dashboard...');
+            showScreen('admin-dashboard');
+            setTimeout(() => {
+                initializeAdminDashboard();
+            }, 200);
+            break;
+        default:
+            showModal('Error', 'Unknown role. Please login again.');
+            break;
+    }
+}
+
+function initializeCounters() {
+    // Counter animation will be triggered when home page loads
+    console.log('Counters initialized');
+}
+
+function animateCounters() {
+    const counters = document.querySelectorAll('.counter-number');
+    
+    counters.forEach(counter => {
+        const target = parseFloat(counter.dataset.target);
+        const duration = 2000; // 2 seconds
+        const increment = target / (duration / 16); // 60fps
+        let current = 0;
+        
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            
+            // Format the number based on whether it's a decimal
+            if (target % 1 !== 0) {
+                counter.textContent = current.toFixed(1);
+            } else {
+                counter.textContent = Math.floor(current).toLocaleString();
+            }
+        }, 16);
+    });
+}

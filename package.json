@@ -1,0 +1,28 @@
+{
+  "name": "hackathon_project_website",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TSaha4/Hackathon_Project_Website.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TSaha4/Hackathon_Project_Website/issues"
+  },
+  "homepage": "https://github.com/TSaha4/Hackathon_Project_Website#readme",
+  "description": "",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.2.0",
+    "express": "^5.1.0",
+    "mongodb": "^6.19.0",
+    "uuid": "^13.0.0"
+  }
+}

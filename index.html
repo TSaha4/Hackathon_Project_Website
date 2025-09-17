@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light only">
     <title>Mitra - Mental Health Support</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <!-- Landing Page (Now the first screen) -->
-    <div id="landing-page" class="screen active">
+    <!-- Role Selection Page (First page) -->
+    <div id="role-selection-page" class="screen active">
         <div class="container">
-            <div class="landing-content">
+            <div class="role-selection-content">
                 <div class="app-logo">
-                    <h1 class="app-title">🧠 Mitra</h1>
+                    <h1 class="app-title"> Mitra</h1>
                     <p class="app-subtitle">Mental health Inclusive Therapy and Recovery Assistance</p>
                 </div>
                 
@@ -45,6 +46,165 @@
         </div>
     </div>
 
+    <!-- Landing Page (Now the home page) -->
+    <div id="landing-page" class="screen">
+        <!-- Header -->
+        <header class="landing-header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="brand-logo">
+                        <h1>Mitra</h1>
+                    </div>
+                    <nav class="main-nav">
+                        <a href="#" class="nav-link">HOME</a>
+                        <a href="#" class="nav-link">ABOUT US</a>
+                        <a href="#" class="nav-link">SERVICES</a>
+                    </nav>
+                    <div class="header-actions">
+                        <button class="btn btn--primary btn--sm" id="dashboard-btn" onclick="goToDashboard()">DASHBOARD</button>
+                        <button class="btn btn--secondary btn--sm" onclick="logout()">LOGOUT</button>
+                        <div class="search-container">
+                            <button class="search-btn">
+                                <span class="search-icon">🔍</span>
+                            </button>
+                            <input type="text" class="search-input" placeholder="Search...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h1 class="hero-title">
+                            <span class="title-mental">MENTAL</span>
+                            <span class="title-health">HEALTH</span>
+                        </h1>
+                        <p class="hero-description">
+                            College life can get overwhelming — but you don’t have to go through it alone. Our app helps you track your vibes, manage stress, and connect with the right support so you can focus on being your best self.
+                        </p>
+                        <button class="btn btn--primary btn--lg">READ MORE</button>
+                        <div class="pagination-dots">
+                            <span class="dot active"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+                    </div>
+                    <div class="hero-illustration">
+                        <div class="illustration-container">
+                            <div class="head-silhouette"></div>
+                            <div class="heart-icon">
+                                <div class="heart"></div>
+                                <div class="heartbeat-line"></div>
+                            </div>
+                            <div class="doctor-character">
+                                <div class="doctor-body"></div>
+                                <div class="doctor-head"></div>
+                                <div class="stethoscope"></div>
+                            </div>
+                            <div class="floating-elements">
+                                <div class="gear-bubble">⚙️</div>
+                                <div class="plus-sign plus-1">+</div>
+                                <div class="plus-sign plus-2">+</div>
+                            </div>
+                            <div class="decorative-leaves">
+                                <div class="leaf leaf-1"></div>
+                                <div class="leaf leaf-2"></div>
+                                <div class="leaf leaf-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mood Tracking Section -->
+        <section class="mood-tracking-section">
+            <div class="container">
+                <div class="mood-tracking-content">
+                    <h2>How's your day going?</h2>
+                    <p class="mood-subtitle">Track your mood and mental well-being</p>
+                    
+                    <div class="mood-options">
+                        <button class="mood-option" data-mood="1">
+                            <div class="mood-emoji">😢</div>
+                            <div class="mood-label">Very Low</div>
+                        </button>
+                        <button class="mood-option" data-mood="2">
+                            <div class="mood-emoji">😔</div>
+                            <div class="mood-label">Low</div>
+                        </button>
+                        <button class="mood-option" data-mood="3">
+                            <div class="mood-emoji">😐</div>
+                            <div class="mood-label">Neutral</div>
+                        </button>
+                        <button class="mood-option" data-mood="4">
+                            <div class="mood-emoji">😊</div>
+                            <div class="mood-label">Good</div>
+                        </button>
+                        <button class="mood-option" data-mood="5">
+                            <div class="mood-emoji">😄</div>
+                            <div class="mood-label">Great</div>
+                        </button>
+                    </div>
+                    
+                    <div class="mood-actions">
+                        <button class="btn btn--secondary" id="skip-mood">Skip for now</button>
+                        <button class="btn btn--primary" id="save-mood" disabled>Save Mood</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rest Counters Section -->
+        <section class="rest-counters-section">
+            <div class="container">
+                <div class="counters-grid">
+                    <div class="counter-card">
+                        <div class="counter-icon">👥</div>
+                        <div class="counter-number" data-target="2847">0</div>
+                        <div class="counter-label">Active Students</div>
+                        <div class="counter-trend up">+12% this week</div>
+                    </div>
+                    <div class="counter-card">
+                        <div class="counter-icon">📊</div>
+                        <div class="counter-number" data-target="3.4">0</div>
+                        <div class="counter-label">Avg Mood Score</div>
+                        <div class="counter-trend down">-0.3 from last week</div>
+                    </div>
+                    <div class="counter-card">
+                        <div class="counter-icon">🤝</div>
+                        <div class="counter-number" data-target="156">0</div>
+                        <div class="counter-label">Peer Volunteers</div>
+                        <div class="counter-trend up">+8 new this month</div>
+                    </div>
+                    <div class="counter-card">
+                        <div class="counter-icon">👨‍⚕️</div>
+                        <div class="counter-number" data-target="42">0</div>
+                        <div class="counter-label">Counselors</div>
+                        <div class="counter-trend up">+3 new this month</div>
+                    </div>
+                    <div class="counter-card">
+                        <div class="counter-icon">🌍</div>
+                        <div class="counter-number" data-target="4">0</div>
+                        <div class="counter-label">Regions Covered</div>
+                        <div class="counter-trend stable">All major regions</div>
+                    </div>
+                    <div class="counter-card">
+                        <div class="counter-icon">💬</div>
+                        <div class="counter-number" data-target="98">0</div>
+                        <div class="counter-label">Languages Supported</div>
+                        <div class="counter-trend up">+2 new languages</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
     <!-- Student Login -->
     <div id="student-login" class="screen">
         <div class="container">
@@ -70,7 +230,7 @@
                     </div>
                     <button type="submit" class="btn btn--primary btn--full-width">Login Securely</button>
                 </form>
-                <button class="btn btn--outline btn--full-width mt-8" onclick="showScreen('landing-page')">Back</button>
+                <button class="btn btn--outline btn--full-width mt-8" onclick="window.history.back()">Back</button>
             </div>
         </div>
     </div>
@@ -91,7 +251,7 @@
                     </div>
                     <button type="submit" class="btn btn--primary btn--full-width">Login Securely</button>
                 </form>
-                <button class="btn btn--outline btn--full-width mt-8" onclick="showScreen('landing-page')">Back</button>
+                <button class="btn btn--outline btn--full-width mt-8" onclick="window.history.back()">Back</button>
             </div>
         </div>
     </div>
@@ -112,7 +272,7 @@
                     </div>
                     <button type="submit" class="btn btn--primary btn--full-width">Login Securely</button>
                 </form>
-                <button class="btn btn--outline btn--full-width mt-8" onclick="showScreen('landing-page')">Back</button>
+                <button class="btn btn--outline btn--full-width mt-8" onclick="window.history.back()">Back</button>
             </div>
         </div>
     </div>
@@ -416,7 +576,7 @@
                     <div class="calendar-grid" id="calendar-grid">
                         <!-- Calendar will be populated by JavaScript -->
                     </div>
-                    <button class="btn btn--outline" onclick="hideBookingCalendar()">Back to Counselors</button>
+                    <button class="btn btn--outline" onclick="window.history.back()">Back to Counselors</button>
                 </div>
             </div>
         </div>
@@ -886,7 +1046,7 @@
                 <span class="nav-label">Peers</span>
             </button>
             <button class="nav-item" onclick="showSection('cultural-wellness-section')">
-                <span class="nav-icon">🕉️</span>
+                <span class="nav-icon">🌸</span>
                 <span class="nav-label">Culture</span>
             </button>
             <button class="nav-item" onclick="showSection('resources-section')">
